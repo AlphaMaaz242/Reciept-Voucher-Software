@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Voucher History</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 30px;
+      background: #f2f4f8;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    .search-bar {
+      width: 100%;
+      max-width: 600px;
+      margin: 20px auto;
+      text-align: center;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 12px 15px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      transition: border 0.3s ease;
+    }
+
+    .search-bar input:focus {
+      border-color: #357ABD;
+      outline: none;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin: 0 auto 30px;
+      padding: 10px 20px;
+      background: #4a90e2;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 4px 6px rgba(74, 144, 226, 0.4);
+      transition: background 0.3s ease;
+    }
+
+    .back-btn:hover {
+      background: #357abd;
+    }
+
+    table {
+      width: 95%;
+      max-width: 1000px;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      border: 1px solid #e0e0e0;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #357ABD;
+      color: white;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f7faff;
+    }
+
+    .no-data {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 18px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>📄 Voucher History</h2>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="🔍 Search by Voucher No or Customer Name..." />
+  </div>
+
+  <div style="text-align: center;">
+    <a href="index.html" class="back-btn">⬅ Back to Voucher</a>
+  </div>
+
+  <table id="voucherTable">
+    <thead>
+      <tr>
+        <th>Voucher No</th>
+        <th>Date</th>
+        <th>Customer Name</th>
+        <th>Amount (SAR)</th>
+        <th>Cheque No</th>
+        <th>Bank Name</th>
+        <th>Against Invoice</th>
+        <th>Remarks</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <p id="noDataMsg" class="no-data" style="display:none;">No voucher records found.</p>
+
+  <script>
+    let allVouchers = [];
+
+    function loadVouchers() {
+      allVouchers = JSON.parse(localStorage.getItem('vouchers') || '[]');
+      displayVouchers(allVouchers);
+    }
+
+    function displayVouchers(vouchers) {
+      const tbody = document.querySelector('#voucherTable tbody');
+      const noDataMsg = document.getElementById('noDataMsg');
+      tbody.innerHTML = '';
+
+      if (vouchers.length === 0) {
+        noDataMsg.style.display = 'block';
+        document.getElementById('voucherTable').style.display = 'none';
+        return;
+      }
+
+      noDataMsg.style.display = 'none';
+      document.getElementById('voucherTable').style.display = 'table';
+
+      vouchers.forEach(voucher => {
+        let tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${voucher.rvNo || ''}</td>
+          <td>${voucher.date || ''}</td>
+          <td>${voucher.customerName || ''}</td>
+          <td>${voucher.amount || ''}</td>
+          <td>${voucher.chequeNo || ''}</td>
+          <td>${voucher.bankName || ''}</td>
+          <td>${voucher.againstInvoice || ''}</td>
+          <td>${voucher.remarks || ''}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Live Search
+    document.addEventListener("DOMContentLoaded", function () {
+      document.getElementById('searchInput').addEventListener('input', function () {
+        const query = this.value.toLowerCase();
+        const filtered = allVouchers.filter(v =>
+          (v.rvNo || '').toLowerCase().includes(query) ||
+          (v.customerName || '').toLowerCase().includes(query)
+        );
+        displayVouchers(filtered);
+      });
+    });
+
+    window.onload = loadVouchers;
+  </script>
+
+</body>
+</html>
