@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Receipt Voucher</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<style>
+  /* Search Bar Styling */
+  .search-bar {
+    width: 90%;
+    max-width: 900px;
+    margin: 20px auto;
+    text-align: right;
+  }
+
+  .search-bar input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+</style>
+<body>
+  <div id="voucher">
+
+    <!-- Header -->
+    <div class="header">
+      <!-- Left: Company Name -->
+      <div class="company-name">
+        <h2>White Diamond Art Co.</h2>
+        <h2>شركة وايت دياموند آرت</h2>
+        <!-- hr removed; line done by CSS -->
+      </div>
+
+      <!-- Center: Logo -->
+      <div class="logo-box">
+        <img src="Voucher Logo.jpg" alt="Logo" class="logo" />
+      </div>
+
+      <!-- Right: Date & Voucher -->
+      <div class="voucher-info">
+        <p>Date: <span id="date">03-July-2025</span></p>
+        <p>Voucher No: <span id="rvno">RV-001</span></p>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <h3 class="center-text">RECEIPT VOUCHER</h3>
+    <h3 class="center-text">سند قبض</h3>
+
+    <!-- Form Area -->
+    <div class="form-center">
+      <div class="form-group">
+        <label>Customer Name:</label>
+        <input type="text" class="boxed bold" />
+      </div>
+      <div class="form-group">
+        <label>Amount (SAR):</label>
+        <input
+          type="text"
+          class="boxed"
+          id="amount"
+          oninput="convertToWords(this.value)"
+        />
+      </div>
+      <div class="form-group">
+        <label>Amount in Words:</label>
+        <input type="text" class="boxed" id="amountWords" readonly />
+      </div>
+      <div class="form-group">
+        <label>Cheque No:</label>
+        <input type="text" class="boxed" />
+      </div>
+      <div class="form-group">
+        <label>Cheque Date:</label>
+        <input type="date" class="boxed" />
+      </div>
+      <div class="form-group">
+        <label>Bank Name:</label>
+        <input type="text" class="boxed" />
+      </div>
+      <div class="form-group">
+        <label>Against Invoice:</label>
+        <input type="text" class="boxed" />
+      </div>
+      <div class="form-group">
+        <label>Remarks:</label>
+        <input type="text" class="boxed" />
+      </div>
+    </div>
+
+    <!-- Signatures -->
+    <div class="sign-stick">
+      <div class="received-by">
+        <label>Received by</label><br />
+        <input type="text" class="boxed" value="Nizam Uddin" />
+      </div>
+      <div class="signature">
+        <label>Signature</label>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="action-bar no-print">
+      <button onclick="handlePrint()">🖨️ Print</button>
+      <button onclick="location.href='voucher.html'">📄 Check Voucher History</button>
+    </div>
+  </div>
+
+  <script>
+    // Convert numbers to words
+    function convertToWords(num) {
+      const words = numToWords(parseInt(num));
+      document.getElementById("amountWords").value = "SR. " + words + " Only";
+    }
+
+    function numToWords(num) {
+      const ones = [
+        "",
+        "One",
+        "Two",
+        "Three",
+        "Four",
+        "Five",
+        "Six",
+        "Seven",
+        "Eight",
+        "Nine",
+      ];
+      const tens = [
+        "",
+        "",
+        "Twenty",
+        "Thirty",
+        "Forty",
+        "Fifty",
+        "Sixty",
+        "Seventy",
+        "Eighty",
+        "Ninety",
+      ];
+      const teens = [
+        "Ten",
+        "Eleven",
+        "Twelve",
+        "Thirteen",
+        "Fourteen",
+        "Fifteen",
+        "Sixteen",
+        "Seventeen",
+        "Eighteen",
+        "Nineteen",
+      ];
+      if (isNaN(num) || num === 0) return "Zero Riyals";
+      let word = "";
+      if (Math.floor(num / 1000) > 0) {
+        word += numToWords(Math.floor(num / 1000)) + " Thousand ";
+        num %= 1000;
+      }
+      if (Math.floor(num / 100) > 0) {
+        word += ones[Math.floor(num / 100)] + " Hundred ";
+        num %= 100;
+      }
+      if (num > 0) {
+        if (num < 10) word += ones[num];
+        else if (num < 20) word += teens[num - 10];
+        else {
+          word += tens[Math.floor(num / 10)];
+          if (num % 10 > 0) word += " " + ones[num % 10];
+        }
+      }
+      return word.trim() + " Riyals";
+    }
+
+    // RV Number Auto-Increment
+    function loadRVNumber() {
+      let rv = localStorage.getItem("rv_no") || "RV-000";
+      let number = parseInt(rv.split("-")[1]) + 1;
+      let newRV = "RV-" + number.toString().padStart(3, "0");
+      document.getElementById("rvno").innerText = newRV;
+      localStorage.setItem("rv_no", newRV);
+      return newRV;
+    }
+
+    // Show last saved RV No. on page load
+    window.onload = function () {
+      document.getElementById("rvno").innerText =
+        localStorage.getItem("rv_no") || "RV-001";
+    };
+
+    // Print + Increment RV
+    function handlePrint() {
+      loadRVNumber();
+      window.print();
+    }
+
+    // Download PDF + Increment RV
+    document
+      .getElementById("downloadPdf")
+      .addEventListener("click", () => {
+        const { jsPDF } = window.jspdf;
+        let currentRV = loadRVNumber();
+        const doc = new jsPDF("p", "pt", "a4");
+        doc.html(document.querySelector("#voucher"), {
+          callback: function (doc) {
+            doc.save(currentRV + ".pdf");
+          },
+          x: 20,
+          y: 20,
+          width: 555,
+        });
+      });
+  </script>
+</body>
+</html>
