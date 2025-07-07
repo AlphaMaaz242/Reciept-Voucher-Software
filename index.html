@@ -5,48 +5,28 @@
   <title>Receipt Voucher</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script.js"></script>
 </head>
-<style>
-  /* Search Bar Styling */
-  .search-bar {
-    width: 90%;
-    max-width: 900px;
-    margin: 20px auto;
-    text-align: right;
-  }
-
-  .search-bar input {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #bbb;
-    border-radius: 6px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  }
-</style>
 <body>
   <div id="voucher">
 
     <!-- Header -->
     <div class="header">
-      <!-- Left: Company Name -->
       <div class="company-name">
         <h2>White Diamond Art Co.</h2>
         <h2>شركة وايت دياموند آرت</h2>
-        <!-- hr removed; line done by CSS -->
       </div>
-
-      <!-- Center: Logo -->
       <div class="logo-box">
         <img src="Voucher Logo.jpg" alt="Logo" class="logo" />
       </div>
-
-      <!-- Right: Date & Voucher -->
       <div class="voucher-info">
         <p>Date: <span id="date">03-July-2025</span></p>
         <p>Voucher No: <span id="rvno">RV-001</span></p>
       </div>
     </div>
+
+    <!-- Bold Black Line Under Header -->
+    <hr class="full-divider" />
 
     <!-- Title -->
     <h3 class="center-text">RECEIPT VOUCHER</h3>
@@ -60,12 +40,7 @@
       </div>
       <div class="form-group">
         <label>Amount (SAR):</label>
-        <input
-          type="text"
-          class="boxed"
-          id="amount"
-          oninput="convertToWords(this.value)"
-        />
+        <input type="text" class="boxed" id="amount" oninput="convertToWords(this.value)" />
       </div>
       <div class="form-group">
         <label>Amount in Words:</label>
@@ -111,50 +86,25 @@
     </div>
   </div>
 
+  <!-- Footer with line -->
+  <div class="voucher-footer">
+    <div class="footer-line"></div>
+    <p>
+      📍 Building No-2394, Street No-23, Al Khobar Al Jonubiyah, Postal Code-34611<br />
+      📞 Mob: +966 56 530 9581 / +966 53 721 8050
+    </p>
+  </div>
+
   <script>
-    // Convert numbers to words
     function convertToWords(num) {
       const words = numToWords(parseInt(num));
       document.getElementById("amountWords").value = "SR. " + words + " Only";
     }
 
     function numToWords(num) {
-      const ones = [
-        "",
-        "One",
-        "Two",
-        "Three",
-        "Four",
-        "Five",
-        "Six",
-        "Seven",
-        "Eight",
-        "Nine",
-      ];
-      const tens = [
-        "",
-        "",
-        "Twenty",
-        "Thirty",
-        "Forty",
-        "Fifty",
-        "Sixty",
-        "Seventy",
-        "Eighty",
-        "Ninety",
-      ];
-      const teens = [
-        "Ten",
-        "Eleven",
-        "Twelve",
-        "Thirteen",
-        "Fourteen",
-        "Fifteen",
-        "Sixteen",
-        "Seventeen",
-        "Eighteen",
-        "Nineteen",
-      ];
+      const ones = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
+      const tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+      const teens = ["Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
       if (isNaN(num) || num === 0) return "Zero Riyals";
       let word = "";
       if (Math.floor(num / 1000) > 0) {
@@ -176,7 +126,6 @@
       return word.trim() + " Riyals";
     }
 
-    // RV Number Auto-Increment
     function loadRVNumber() {
       let rv = localStorage.getItem("rv_no") || "RV-000";
       let number = parseInt(rv.split("-")[1]) + 1;
@@ -186,34 +135,14 @@
       return newRV;
     }
 
-    // Show last saved RV No. on page load
     window.onload = function () {
-      document.getElementById("rvno").innerText =
-        localStorage.getItem("rv_no") || "RV-001";
+      document.getElementById("rvno").innerText = localStorage.getItem("rv_no") || "RV-001";
     };
 
-    // Print + Increment RV
     function handlePrint() {
       loadRVNumber();
       window.print();
     }
-
-    // Download PDF + Increment RV
-    document
-      .getElementById("downloadPdf")
-      .addEventListener("click", () => {
-        const { jsPDF } = window.jspdf;
-        let currentRV = loadRVNumber();
-        const doc = new jsPDF("p", "pt", "a4");
-        doc.html(document.querySelector("#voucher"), {
-          callback: function (doc) {
-            doc.save(currentRV + ".pdf");
-          },
-          x: 20,
-          y: 20,
-          width: 555,
-        });
-      });
   </script>
 </body>
 </html>
