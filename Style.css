@@ -1,172 +1,205 @@
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f7f7f7;
+  font-family: 'Segoe UI', sans-serif;
   margin: 0;
   padding: 0;
+  background: #f4f4f4;
 }
 
-#voucher {
+.voucher-container {
   width: 800px;
-  margin: 20px auto;
-  background: white;
-  padding: 20px 30px;
+  margin: 30px auto;
+  background: #fff;
+  padding: 30px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  border-radius: 10px;
   position: relative;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.company-name {
-  flex: 1;
-}
-
-.company-name h2 {
-  margin: 0;
-  font-size: 20px;
-}
-
-.logo-box {
-  flex: 1;
+.voucher-header {
   text-align: center;
+  margin-bottom: 20px;
 }
 
-.logo {
-  height: 70px;
+.company-logo {
+  max-height: 80px;
+  margin: 0 auto;
 }
 
-.voucher-info {
-  flex: 1;
-  text-align: right;
-  font-size: 14px;
+.company-names {
+  margin-top: 5px;
 }
 
-.center-text {
-  text-align: center;
-  margin: 15px 0;
+.company-names .en-name {
   font-size: 18px;
+  font-weight: bold;
+}
+
+.company-names .ar-name {
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.voucher-title {
+  margin-top: 5px;
+}
+
+.voucher-title h2 {
+  font-size: 24px;
+  margin: 0;
+  font-weight: bold;
+}
+
+.voucher-title h3 {
+  font-size: 18px;
+  margin: 0;
+  font-weight: normal;
   color: #333;
 }
 
-.full-divider {
+.header-line {
+  margin-top: 15px;
   border: none;
-  height: 3px;
-  background-color: #000;
-  margin: 15px 0 25px;
-  display: block;
+  height: 1px;
+  background-color: #999;
 }
 
-.form-center {
+.voucher-details {
+  margin-top: 20px;
+}
+
+.row {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.form-group {
-  width: 48%;
   margin-bottom: 15px;
 }
 
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
+label {
+  width: 180px;
   font-weight: bold;
 }
 
-.boxed {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #999;
-  border-radius: 5px;
-  font-size: 14px;
+input[type="text"],
+input[type="number"],
+input[type="date"] {
+  flex: 1;
+  padding: 5px;
+  font-size: 15px;
+  margin-left: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-.bold {
-  font-weight: bold;
+.signature-section {
+  margin-top: 40px;
 }
 
-.sign-stick {
-  display: flex;
-  justify-content: space-between;
+.signature-line {
+  border-bottom: 1px solid #000;
+  width: 300px;
   margin-top: 30px;
 }
 
-.received-by,
-.signature {
-  width: 45%;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.action-bar {
+.buttons {
+  margin-top: 30px;
   text-align: center;
-  margin-top: 25px;
 }
 
-.action-bar button {
-  padding: 10px 20px;
-  font-size: 14px;
-  margin: 0 8px;
+button {
+  padding: 10px 25px;
+  font-size: 16px;
+  margin: 0 10px;
+  background-color: #3d7bd6;
+  color: #fff;
   border: none;
-  border-radius: 6px;
-  background-color: #4a90e2;
-  color: white;
+  border-radius: 5px;
   cursor: pointer;
-  transition: 0.3s;
 }
 
-.action-bar button:hover {
-  background-color: #357ABD;
+button:hover {
+  background-color: #265bb5;
 }
 
-.no-print {
-  display: block;
-}
-
-/* Footer Section */
+/* Footer fixed to bottom */
 .voucher-footer {
-  display: none;
-  text-align: center;
-  font-size: 13px;
-  font-weight: bold;
-  color: #000;
-  line-height: 1.6;
   position: fixed;
-  bottom: 10px;
-  left: 0;
+  bottom: 0;
   width: 100%;
-  background: white;
-  padding: 10px 0;
-  z-index: 999;
+  font-size: 13px;
+  text-align: center;
+  padding: 10px;
+  background: #fff;
+  border-top: 1px solid #ccc;
+}
+.voucher-header {
+  margin-bottom: 20px;
 }
 
-.footer-line {
-  width: 90%;
-  height: 3px;
-  background-color: #000;
-  margin: 0 auto 8px;
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
 }
 
-@media print {
-  .no-print {
-    display: none !important;
-  }
+.company-name-box {
+  text-align: left;
+}
 
-  .voucher-footer {
-    display: block !important;
-  }
+.en-name {
+  font-size: 18px;
+  font-weight: bold;
+}
 
-  .full-divider {
-    display: block !important;
-    background-color: #000 !important;
-  }
+.ar-name {
+  font-size: 16px;
+}
 
-  .footer-line {
-    display: block !important;
-    background-color: #000 !important;
-  }
+.logo-box {
+  text-align: center;
+}
+
+.company-logo {
+  max-height: 80px;
+  max-width: 100px;
+}
+
+.voucher-meta {
+  text-align: right;
+}
+
+.voucher-meta label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.voucher-meta input {
+  padding: 5px;
+  width: 130px;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.voucher-title-center {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.voucher-title-center h2 {
+  font-size: 22px;
+  margin: 0;
+  font-weight: bold;
+}
+
+.voucher-title-center h3 {
+  font-size: 16px;
+  margin: 0;
+  font-weight: normal;
+  color: #333;
+}
+
+.header-line {
+  margin-top: 15px;
+  border: none;
+  height: 1px;
+  background-color: #999;
 }
