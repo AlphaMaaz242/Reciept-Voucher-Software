@@ -2,147 +2,106 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Receipt Voucher</title>
+  <title>Receipt Voucher - White Diamond Art Co.</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="script.js"></script>
 </head>
 <body>
-  <div id="voucher">
+  <div class="voucher-container">
 
     <!-- Header -->
-    <div class="header">
-      <div class="company-name">
-        <h2>White Diamond Art Co.</h2>
-        <h2>شركة وايت دياموند آرت</h2>
+    <div class="voucher-header">
+      <div class="header-top">
+        <!-- Left: Company Name -->
+        <div class="company-name-box">
+          <h2>White Diamond Art Co.</h1>
+          <h2>شركة وايت دايموند للفنون</h2>
+        </div>
+
+        <!-- Center: Logo -->
+        <div class="logo-box">
+          <img src="Voucher Logo.jpg" alt="Company Logo" class="company-logo" />
+        </div>
+
+        <!-- Right: Date & RV No -->
+        <div class="voucher-meta">
+          <label for="date">Date:</label>
+          <input type="date" id="date" />
+          <br />
+          <label for="rvNo">RV No.:</label>
+          <input type="text" id="rvNo" />
+        </div>
       </div>
-      <div class="logo-box">
-        <img src="Voucher Logo.jpg" alt="Logo" class="logo" />
+
+      <!-- Title -->
+      <div class="voucher-title-center">
+        <h2>سند قبض</h2>
+        <h2>RECEIPT VOUCHER</h2>
       </div>
-      <div class="voucher-info">
-        <p>Date: <span id="date">03-July-2025</span></p>
-        <p>Voucher No: <span id="rvno">RV-001</span></p>
-      </div>
+
+      <hr class="header-line" />
     </div>
 
-    <!-- Bold Black Line Under Header -->
-    <hr class="full-divider" />
-
-    <!-- Title -->
-    <h3 class="center-text">RECEIPT VOUCHER</h3>
-    <h3 class="center-text">سند قبض</h3>
-
-    <!-- Form Area -->
-    <div class="form-center">
-      <div class="form-group">
-        <label>Customer Name:</label>
-        <input type="text" class="boxed bold" />
+    <!-- Voucher Info -->
+    <div class="voucher-details">
+      <div class="row">
+        <label>Buyer's Company Name:</label>
+        <input type="text" id="buyerName" />
       </div>
-      <div class="form-group">
+
+      <div class="row">
         <label>Amount (SAR):</label>
-        <input type="text" class="boxed" id="amount" oninput="convertToWords(this.value)" />
+        <input type="number" id="amount" oninput="convertAmountToWords()" />
       </div>
-      <div class="form-group">
-        <label>Amount in Words:</label>
-        <input type="text" class="boxed" id="amountWords" readonly />
-      </div>
-      <div class="form-group">
-        <label>Cheque No:</label>
-        <input type="text" class="boxed" />
-      </div>
-      <div class="form-group">
+
+      <div class="row">
+        <label>Cheque No.:</label>
+        <input type="text" id="chequeNo" />
+
         <label>Cheque Date:</label>
-        <input type="date" class="boxed" />
+        <input type="date" id="chequeDate" />
       </div>
-      <div class="form-group">
+
+      <div class="row">
         <label>Bank Name:</label>
-        <input type="text" class="boxed" />
+        <input type="text" id="bankName" />
       </div>
-      <div class="form-group">
+
+      <div class="row">
         <label>Against Invoice:</label>
-        <input type="text" class="boxed" />
+        <input type="text" id="againstInvoice" />
       </div>
-      <div class="form-group">
+
+      <div class="row">
+        <label>Amount in Words:</label>
+        <input type="text" id="amountWords" readonly />
+      </div>
+
+      <div class="row">
         <label>Remarks:</label>
-        <input type="text" class="boxed" />
+        <input type="text" id="remarks" />
       </div>
     </div>
 
-    <!-- Signatures -->
-    <div class="sign-stick">
-      <div class="received-by">
-        <label>Received by</label><br />
-        <input type="text" class="boxed" value="Nizam Uddin" />
-      </div>
-      <div class="signature">
-        <label>Signature</label>
-      </div>
+    <!-- Signature -->
+    <div class="signature-section">
+      <div>Receiver's Signature:</div>
+      <div class="signature-line"></div>
     </div>
 
     <!-- Buttons -->
-    <div class="action-bar no-print">
-      <button onclick="handlePrint()">🖨️ Print</button>
-      <button onclick="location.href='voucher.html'">📄 Check Voucher History</button>
+    <div class="buttons">
+      <button onclick="window.print()">Print</button>
+      <button onclick="window.location.reload()">Reset</button>
+       <a href="voucher.html" style="padding: 8px 16px; margin-left: 8px; background-color:#007bff; color: white; text-decoration:none; border-radius:4px;">History</a>
     </div>
+
   </div>
 
-  <!-- Footer with line -->
+  <!-- Footer -->
   <div class="voucher-footer">
-    <div class="footer-line"></div>
-    <p>
-      📍 Building No-2394, Street No-23, Al Khobar Al Jonubiyah, Postal Code-34611<br />
-      📞 Mob: +966 56 530 9581 / +966 53 721 8050
-    </p>
+    Building No-2394, Street No-23, Al Khobar Al Jonubiyah, Postal Code-34611,<br />
+    Mob: +966 56 530 9581 / +966 53 721 8050
   </div>
-
-  <script>
-    function convertToWords(num) {
-      const words = numToWords(parseInt(num));
-      document.getElementById("amountWords").value = "SR. " + words + " Only";
-    }
-
-    function numToWords(num) {
-      const ones = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
-      const tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
-      const teens = ["Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
-      if (isNaN(num) || num === 0) return "Zero Riyals";
-      let word = "";
-      if (Math.floor(num / 1000) > 0) {
-        word += numToWords(Math.floor(num / 1000)) + " Thousand ";
-        num %= 1000;
-      }
-      if (Math.floor(num / 100) > 0) {
-        word += ones[Math.floor(num / 100)] + " Hundred ";
-        num %= 100;
-      }
-      if (num > 0) {
-        if (num < 10) word += ones[num];
-        else if (num < 20) word += teens[num - 10];
-        else {
-          word += tens[Math.floor(num / 10)];
-          if (num % 10 > 0) word += " " + ones[num % 10];
-        }
-      }
-      return word.trim() + " Riyals";
-    }
-
-    function loadRVNumber() {
-      let rv = localStorage.getItem("rv_no") || "RV-000";
-      let number = parseInt(rv.split("-")[1]) + 1;
-      let newRV = "RV-" + number.toString().padStart(3, "0");
-      document.getElementById("rvno").innerText = newRV;
-      localStorage.setItem("rv_no", newRV);
-      return newRV;
-    }
-
-    window.onload = function () {
-      document.getElementById("rvno").innerText = localStorage.getItem("rv_no") || "RV-001";
-    };
-
-    function handlePrint() {
-      loadRVNumber();
-      window.print();
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
